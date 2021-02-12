@@ -1,17 +1,20 @@
 node('master') {
     stage("Fetch Source Code") {
-        git 'https://github.com/Saloni-19/python-jenkins-pipeline'
+        cleanWS()
+        git ([url:'https://github.com/Saloni-19/python-jenkins-pipeline',branch:'add-functions-and-test'])
     }
-  
-     stage("Testing") {
-         bat 'python test_functions.py'
-    }
-    stage("Deployment") {
-         if (env.BRANCH_NAME == 'master') {
-             printMessage('Deploying the master branch')
-         } else {
-             printMessage("No deployment for branch [${env.BRANCH_NAME}]")
-         }
+    dir('.') {
+        printMessage('Running Pipeline')
+        stage("Testing") {
+        bat 'python test_functions.py'
+        }
+        stage("Deployment") {
+             if (env.BRANCH_NAME == 'master') {
+                 printMessage('Deploying the master branch')
+            } else {
+                 printMessage("No deployment for branch [${env.BRANCH_NAME}]")
+            }
+        }
     }
         printMessage('Pipeline Complete')
 }
